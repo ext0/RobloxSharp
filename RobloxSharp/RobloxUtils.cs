@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RobloxSharp
 {
-    static class RobloxUtils
+    public static class RobloxUtils
     {
         /// <summary>
         /// Fetches an XRSF token from the MyTransactions tab
