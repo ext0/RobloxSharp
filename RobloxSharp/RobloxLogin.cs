@@ -19,7 +19,6 @@ namespace RobloxSharp
         /// <param name="username">ROBLOX account username</param>
         /// <param name="password">ROBLOX account password</param>
         /// <param name="cookies">CookieContainer storing SetCookie values</param>
-        /// <returns>The instance of RiotApi.</returns>
         public RobloxLogin(String username, String password, out CookieContainer cookies)
         {
             cookies = new CookieContainer();
