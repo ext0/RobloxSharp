@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobloxSharp", "RobloxSharp\RobloxSharp.csproj", "{4DA0E488-9E4D-4184-891D-0E9C4449D59C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobloxSharpTest", "RobloxSharpTest\RobloxSharpTest.csproj", "{58CC88FD-D0AA-40B9-A420-2D451C7CACCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DA0E488-9E4D-4184-891D-0E9C4449D59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DA0E488-9E4D-4184-891D-0E9C4449D59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DA0E488-9E4D-4184-891D-0E9C4449D59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DA0E488-9E4D-4184-891D-0E9C4449D59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58CC88FD-D0AA-40B9-A420-2D451C7CACCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58CC88FD-D0AA-40B9-A420-2D451C7CACCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58CC88FD-D0AA-40B9-A420-2D451C7CACCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58CC88FD-D0AA-40B9-A420-2D451C7CACCA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
