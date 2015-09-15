@@ -45,16 +45,8 @@ namespace RobloxSharp
             stream.Write(postBytes, 0, postBytes.Length);
             stream.Close();
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            authCookies = buildCookieString(cookies, response);
-        }
-        internal String buildCookieString(CookieContainer cookies, HttpWebResponse response)
-        {
-            String s = String.Empty;
-            foreach (Cookie cookie in cookies.GetCookies(response.ResponseUri))
-            {
-                s += (cookie.Name + "=" + cookie.Value + "; ");
-            }
-            return s;
+            Tuple<HttpWebResponse, CookieContainer> tuple = RobloxUtils.getGeneralRequestVerificationToken(cookies, RobloxUtils.buildCookieString(cookies, response));
+            authCookies = RobloxUtils.buildCookieString(tuple.Item2,tuple.Item1);
         }
     }
 }

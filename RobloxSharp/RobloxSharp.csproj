@@ -46,7 +46,8 @@
   <ItemGroup>
     <Compile Include="RobloxLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RobloxMessageFetcher.cs" />
+    <Compile Include="RobloxMessageHandler.cs" />
+    <Compile Include="RobloxTradeHandler.cs" />
     <Compile Include="RobloxUtils.cs" />
   </ItemGroup>
   <ItemGroup>

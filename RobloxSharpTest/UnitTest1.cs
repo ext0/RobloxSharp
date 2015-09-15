@@ -13,13 +13,13 @@ namespace RobloxSharpTest
         public void TestMethod1()
         {
             CookieContainer collection;
-            RobloxLogin login = new RobloxLogin("HomeguardDev", "omit", out collection);
-            Debug.WriteLine(login.authCookies);
-            RobloxMessageFetcher messageReader = new RobloxMessageFetcher();
-            MessageCollection messages = messageReader.getNewMessages("0", login.authCookies);
-            foreach (Message message in messages.Collection)
+            RobloxLogin login = new RobloxLogin("HomeguardDev", "0", out collection);
+            RobloxTradeHandler tradeHandler = new RobloxTradeHandler();
+            String XRSFToken = RobloxUtils.getXSRFToken(login.authCookies);
+            TradeList list = tradeHandler.fetchTrades(login.authCookies, XRSFToken, TradeType.Inactive, 0);
+            foreach (TradeSession tradeSession in list.Data)
             {
-                Debug.WriteLine(message.Sender.UserName + ":" + message.Body);
+                TradeDetailsData info = tradeHandler.getTradeInfo(tradeSession.TradeSessionID, XRSFToken, login.authCookies);
             }
         }
         public string Reverse(string s)

@@ -94,5 +94,73 @@ namespace RobloxSharp
             }
             return responseStream;
         }
+        /// <summary>
+        /// Gets a general RVT that is used to perform most requests. Automatically added to authCookies, you shouldn't have to call this.
+        /// </summary>
+        /// <param name="cookies">Authentication cookie string</param>
+        /// <returns>Returns a tuple with the response and associated CookieContainer</returns>
+        public static Tuple<HttpWebResponse, CookieContainer> getGeneralRequestVerificationToken(CookieContainer container, String cookies)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://m.roblox.com/home");
+            request.KeepAlive = true;
+            request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
+            request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
+            request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
+            request.Headers.Set(HttpRequestHeader.Cookie, cookies);
+            request.CookieContainer = container;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            return new Tuple<HttpWebResponse, CookieContainer>(response, container);
+        }
+        /// <summary>
+        /// Builds a cookie string valid for header use from a CookieContainer and an HttpWebResponse
+        /// </summary>
+        /// <param name="cookies">Authentication cookie container</param>
+        /// <param name="response">HttpWebResponse to be reading CookieContainer from</param>
+        /// <returns>Returns a usable header cookie string</returns>
+        public static String buildCookieString(CookieContainer cookies, HttpWebResponse response)
+        {
+            return buildCookieString(cookies, response.ResponseUri);
+        }
+        /// <summary>
+        /// Builds a cookie string valid for header use from a CookieContainer and a Uri
+        /// </summary>
+        /// <param name="cookies">Authentication cookie container</param>
+        /// <param name="uri">Uri to read cookies from</param>
+        /// <returns>Returns a usable header cookie string</returns>
+        public static String buildCookieString(CookieContainer cookies, Uri uri)
+        {
+            String s = String.Empty;
+            foreach (Cookie cookie in cookies.GetCookies(uri))
+            {
+                s += (cookie.Name + "=" + cookie.Value + "; ");
+            }
+            return s;
+        }
+        /// <summary>
+        /// Builds a cookie string valid for header use from a CookieContainer
+        /// </summary>
+        /// <param name="cookies">Authentication cookie collection</param>
+        /// <returns>Returns a usable header cookie string</returns>
+        public static String buildCookieString(CookieCollection cookies)
+        {
+            String s = String.Empty;
+            foreach (Cookie cookie in cookies)
+            {
+                s += (cookie.Name + "=" + cookie.Value + "; ");
+            }
+            return s;
+        }
+    }
+
+    //Why is this here? 
+    //ROBLOX uses this JSON format so often that I may as well put it in the RobloxUtils just for simplicity reasons.
+    public class RobloxResponse
+    {
+        public string sl_translate { get; set; }
+        public bool success { get; set; }
+        public string msg { get; set; }
+        public Object data { get; set; }
     }
 }
