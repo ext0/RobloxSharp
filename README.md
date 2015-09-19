@@ -6,14 +6,7 @@ C# API for performing automated tasks on ROBLOX.com
 <li>Login to get authentication cookies / tokens</li>
 <li>Check messages and automate responses</li>
 <li>Monitor trades and build trade responses / requests</li>
-</ul>
-
-<b><h2>Coming soon</h2></b>
-<ul>
-<li>Purchase/sell assets or limiteds</li>
-<li>Automatic forum posting</li>
-<li>Automatic commenting</li>
-<li>Friend request support</li>
+<li>Automatically purchase assets</li>
 </ul>
 
 <b><h1>Examples</h1></b>
@@ -82,5 +75,11 @@ messageHandler.sendMessage(7904, "Hey Me!", "What's up?", login.authCookies);
 ```
 RobloxPurchaseHandler purchase = new RobloxPurchaseHandler();
 bool response = purchase.requestLimitedPurchase(1337, 123, 1000, login.authCookies); //1337 is assetID, 123 is userAssetOptionId, and 1000 is the price
+Debug.WriteLine(response);
+```
+<b><h2>Purchasing an asset</h2></b>
+```
+RobloxPurchaseHandler purchase = new RobloxPurchaseHandler();
+bool response = purchase.requestAssetPurchase(20642008, 40, CurrencyType.ROBUX, login.authCookies);
 Debug.WriteLine(response);
 ```
