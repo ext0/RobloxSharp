@@ -78,9 +78,9 @@ namespace RobloxSharp
         public String getRequestVerificationToken(int receiverID,String cookies)
         {
             String response = RobloxUtils.readPage("http://m.roblox.com/messages/sendmessage?Id=" + receiverID, cookies);
-            int a = response.IndexOf("value", response.IndexOf("RequestVerificationToken"))+7;
-            return response.Substring(a, response.IndexOf("\"", a + 1) - a);
+            return RobloxUtils.parseToken(response);
         }
+
     }
     public class MessageSender
     {

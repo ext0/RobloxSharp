@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,7 +29,7 @@ namespace RobloxSharp
         /// Creates a JSON trade request with the supplied parameters.
         /// </summary>
         /// <returns>Returns a usable JSON string</returns>
-        public String createTradeRequest(int senderID, int receiverID, List<InventoryItem> sendingItems, List<InventoryItem> receivingItems, int sendingRobux, int receivingRobux)
+        public String createTradeRequest(String senderID, String receiverID, List<InventoryItem> sendingItems, List<InventoryItem> receivingItems, int sendingRobux, int receivingRobux)
         {
             TradeOffer offer = new TradeOffer();
             offer.IsActive = false;
@@ -36,21 +37,25 @@ namespace RobloxSharp
             offer.UserOfferList = new List<UserOfferList>();
             offer.UserOfferList.Add(new UserOfferList
             {
-                AgentID = senderID,
+                AgentID = int.Parse(senderID),
                 OfferList = sendingItems,
                 OfferRobux = sendingRobux,
                 OfferValue = 0 //placeholder
             });
             offer.UserOfferList.Add(new UserOfferList
             {
-                AgentID = receiverID,
+                AgentID = int.Parse(receiverID),
                 OfferList = receivingItems,
                 OfferRobux = receivingRobux,
                 OfferValue = 0 //placeholder
             });
             return WebUtility.UrlEncode(JsonConvert.SerializeObject(offer));
         }
-        public TradeDetailsData getTradeInfo(String tradeSessionId, String XRSFToken, String cookies)
+        public String createTradeRequest(String senderID, String receiverID, TradeObject trade)
+        {
+            return createTradeRequest(senderID, receiverID, trade.sending.OfferList, trade.receiving.OfferList, trade.sending.OfferRobux, trade.receiving.OfferRobux);
+        }
+        public RobloxTradeInfoResponse getTradeInfo(String tradeSessionId, String XRSFToken, String cookies)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.roblox.com/Trade/TradeHandler.ashx");
 
@@ -84,7 +89,7 @@ namespace RobloxSharp
                 using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
                 {
                     String s = readStream.ReadToEnd().Replace("\\\\", "").Replace("\\\"", "\"").Replace("\"{", "{").Replace("}\"", "}");
-                    return JsonConvert.DeserializeObject<TradeDetailsData>(RobloxUtils.unicodeStringToNET(s));
+                    return JsonConvert.DeserializeObject<RobloxTradeInfoResponse>(RobloxUtils.unicodeStringToNET(s));
                 }
             }
         }

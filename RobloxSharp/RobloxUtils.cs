@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -152,6 +153,28 @@ namespace RobloxSharp
             }
             return s;
         }
+        public static UsernameRequest getUsername(String id)
+        {
+            return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/Users/" + id, ""));
+        }
+        public static UsernameRequest getUserId(String username)
+        {
+            return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/users/get-by-username?username=" + username, ""));
+        }
+        public static TradeObject makeTradeObject(TradeDetailsData data)
+        {
+            TradeObject obj = new TradeObject
+            {
+                receiving = data.AgentOfferList[1],
+                sending = data.AgentOfferList[0]
+            };
+            return obj;
+        }
+        public static String parseToken(String input)
+        {
+            int a = input.IndexOf("value", input.IndexOf("RequestVerificationToken")) + 7;
+            return input.Substring(a, input.IndexOf("\"", a + 1) - a);
+        }
     }
 
     //Why is this here? 
@@ -162,5 +185,28 @@ namespace RobloxSharp
         public bool success { get; set; }
         public string msg { get; set; }
         public Object data { get; set; }
+    }
+
+    public class TradeObject
+    {
+        public UserOfferList receiving { get; set; }
+        public UserOfferList sending { get; set; }
+    }
+
+    public class RobloxTradeInfoResponse
+    {
+        public string sl_translate { get; set; }
+        public bool success { get; set; }
+        public string msg { get; set; }
+        public TradeDetailsData data { get; set; }
+    }
+
+    public class UsernameRequest
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public object AvatarUri { get; set; }
+        public bool AvatarFinal { get; set; }
+        public bool IsOnline { get; set; }
     }
 }
