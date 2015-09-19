@@ -78,3 +78,9 @@ foreach (Message message in messages.Collection)
 RobloxMessageHandler messageHandler = new RobloxMessageHandler();
 messageHandler.sendMessage(7904, "Hey Me!", "What's up?", login.authCookies);
 ```
+<b><h2>Purchasing a limited item</h2></b>
+```
+RobloxPurchaseHandler purchase = new RobloxPurchaseHandler();
+bool response = purchase.requestLimitedPurchase(1337, 123, 1000, login.authCookies); //1337 is assetID, 123 is userAssetOptionId, and 1000 is the price
+Debug.WriteLine(response);
+```
