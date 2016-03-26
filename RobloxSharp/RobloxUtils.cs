@@ -14,6 +14,8 @@ namespace RobloxSharp
 {
     public static class RobloxUtils
     {
+
+        public static String UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
         /// <summary>
         /// Fetches an XRSF token from the MyTransactions tab
         /// </summary>
@@ -26,8 +28,7 @@ namespace RobloxSharp
             request.KeepAlive = true;
             request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
-            //request.Referer = "http://www.roblox.com/Trade/TradeWindow.aspx?TradeSessionId=19511404&TradePartnerID=49951807";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
             request.Headers.Set(HttpRequestHeader.Cookie, cookies);
@@ -66,7 +67,7 @@ namespace RobloxSharp
             {
                 request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
                 request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-                request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
+                request.UserAgent = RobloxUtils.UserAgent;
                 request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
                 request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
                 request.Headers.Set(HttpRequestHeader.Cookie, cookies);
@@ -106,7 +107,7 @@ namespace RobloxSharp
             request.KeepAlive = true;
             request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
             request.Headers.Set(HttpRequestHeader.Cookie, cookies);

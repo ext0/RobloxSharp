@@ -28,7 +28,7 @@ namespace RobloxSharp
             request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
             request.Headers.Add("Origin", @"https://m.roblox.com");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.132 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.ContentType = "application/x-www-form-urlencoded";
             request.Referer = "https://m.roblox.com/Login?ReturnUrl=%2f";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
@@ -39,7 +39,7 @@ namespace RobloxSharp
             request.ServicePoint.Expect100Continue = false;
 
             string body = @"UserName=" + username + "&Password=" + password + "&IdentificationCode=";
-            byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            byte[] postBytes = Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();
             stream.Write(postBytes, 0, postBytes.Length);

@@ -13,10 +13,9 @@ namespace RobloxSharpTest
         public void TestMethod1()
         {
             CookieContainer collection;
-            RobloxLogin login = new RobloxLogin("HomeguardDev", "omit", out collection);
-            RobloxPurchaseHandler purchase = new RobloxPurchaseHandler();
-            bool response = purchase.requestAssetPurchase(20642008, 40, CurrencyType.ROBUX, login.authCookies);
-            Debug.WriteLine(response);
+            RobloxLogin login = new RobloxLogin("HomeguardDev", Reverse("omit"), out collection);
+            RobloxPurchaseHandler handler = new RobloxPurchaseHandler();
+            Debug.WriteLine(handler.requestLimitedPurchase(145834328, 1704166954, 102, login.authCookies));
         }
         public string Reverse(string s)
         {

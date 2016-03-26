@@ -59,7 +59,7 @@ namespace RobloxSharp
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.roblox.com/Trade/TradeHandler.ashx");
 
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.5");
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
@@ -97,7 +97,7 @@ namespace RobloxSharp
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.roblox.com/My/Money.aspx/GetMyItemTrades");
 
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Accept = "*/*";
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.5");
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
@@ -154,9 +154,8 @@ namespace RobloxSharp
             request.Headers.Add("Origin", @"http://www.roblox.com");
             request.Headers.Add("X-CSRF-TOKEN", XRSFToken);
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-            request.Referer = "http://www.roblox.com/Trade/TradeWindow.aspx?TradePartnerID=85503967";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
             request.Headers.Set(HttpRequestHeader.Pragma, "no-cache");
@@ -176,7 +175,7 @@ namespace RobloxSharp
             {
                 body = "cmd=send&TradeJSON=" + tradeJSON;
             }
-            byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            byte[] postBytes = Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();
             stream.Write(postBytes, 0, postBytes.Length);

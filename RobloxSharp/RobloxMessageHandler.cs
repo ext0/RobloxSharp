@@ -36,7 +36,7 @@ namespace RobloxSharp
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://m.roblox.com/messages/sendmessagework");
 
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Accept = "text/html, */*; q=0.01";
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.5");
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");

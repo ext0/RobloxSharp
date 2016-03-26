@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,14 +33,14 @@ namespace RobloxSharp
             request.Accept = "text/html, */*; q=0.01";
             request.Headers.Add("Origin", @"https://m.roblox.com");
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
             request.Referer = "https://m.roblox.com/items/" + assetID + "/privatesales";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
             request.Headers.Set(HttpRequestHeader.Cookie, cookies);
             string body = @"__RequestVerificationToken=" + token + "&CurrencyType=1&AssetID=0&UserAssetOptionID=" + userAssetOptionId + "&ExpectedPrice=" + expectedPrice;
-            byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            byte[] postBytes = Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();
             stream.Write(postBytes, 0, postBytes.Length);
@@ -62,7 +63,7 @@ namespace RobloxSharp
             request.Accept = "text/html, */*; q=0.01";
             request.Headers.Add("Origin", @"https://m.roblox.com");
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
             request.Referer = "https://m.roblox.com/items/295133189";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
@@ -72,7 +73,7 @@ namespace RobloxSharp
             request.ServicePoint.Expect100Continue = false;
 
             string body = @"__RequestVerificationToken=" + token + "&CurrencyType=" + ((currency == CurrencyType.ROBUX) ? "1" : "2") + "&AssetID="+assetID+"&UserAssetOptionID=0&ExpectedPrice="+expectedPrice;
-            byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            byte[] postBytes = Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();
             stream.Write(postBytes, 0, postBytes.Length);
@@ -95,7 +96,7 @@ namespace RobloxSharp
             request.KeepAlive = true;
             request.Accept = "text/html, */*; q=0.01";
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Referer = "https://m.roblox.com/items/" + assetID + "/privatesales";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
@@ -117,7 +118,7 @@ namespace RobloxSharp
             request.KeepAlive = true;
             request.Accept = "text/html, */*; q=0.01";
             request.Headers.Add("X-Requested-With", @"XMLHttpRequest");
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
+            request.UserAgent = RobloxUtils.UserAgent;
             request.Referer = "https://m.roblox.com/items/" + assetID;
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
@@ -128,7 +129,12 @@ namespace RobloxSharp
             {
                 using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
                 {
-                    return RobloxUtils.parseToken(readStream.ReadToEnd());
+                    String s = readStream.ReadToEnd();
+                    if (s.Contains("You already own this item"))
+                    {
+                        throw new Exception("User already owns asset " + assetID + "!");
+                    }
+                    return RobloxUtils.parseToken(s);
                 }
             }
         }
