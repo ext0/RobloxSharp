@@ -173,6 +173,10 @@ namespace RobloxSharp
         }
         public static String parseToken(String input)
         {
+            if (input.IndexOf("RequestVerificationToken") == -1)
+            {
+                throw new Exception("Input string (" + input + ") does not contain a valid RVT!");
+            }
             int a = input.IndexOf("value", input.IndexOf("RequestVerificationToken")) + 7;
             return input.Substring(a, input.IndexOf("\"", a + 1) - a);
         }
