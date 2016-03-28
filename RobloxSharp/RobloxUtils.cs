@@ -156,11 +156,39 @@ namespace RobloxSharp
         }
         public static UsernameRequest getUsername(String id)
         {
-            return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/Users/" + id, ""));
+            try
+            {
+                return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/Users/" + id, ""));
+            }
+            catch
+            {
+                return new UsernameRequest
+                {
+                    AvatarFinal = true,
+                    AvatarUri = "",
+                    Id = 1,
+                    IsOnline = false,
+                    Username = "unknown"
+                };
+            }
         }
         public static UsernameRequest getUserId(String username)
         {
-            return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/users/get-by-username?username=" + username, ""));
+            try
+            {
+                return JsonConvert.DeserializeObject<UsernameRequest>(readPage("http://api.roblox.com/users/get-by-username?username=" + username, ""));
+            }
+            catch
+            {
+                return new UsernameRequest
+                {
+                    AvatarFinal = true,
+                    AvatarUri = "",
+                    Id = 1,
+                    IsOnline = false,
+                    Username = "unknown"
+                };
+            }
         }
         public static TradeObject makeTradeObject(TradeDetailsData data)
         {
@@ -170,6 +198,19 @@ namespace RobloxSharp
                 sending = data.AgentOfferList[0]
             };
             return obj;
+        }
+        public static String getUrlForHeadshot(String username)
+        {
+            try
+            {
+                UsernameRequest request = getUserId(username);
+                HeadShotResponse response = JsonConvert.DeserializeObject<HeadShotResponse>(new WebClient().DownloadString("http://www.roblox.com/headshot-thumbnail/json?userId=" + request.Id + "&width=180&height=180"));
+                return response.Url;
+            }
+            catch
+            {
+                return "/Images/placeholder.png";
+            }
         }
         public static String parseToken(String input)
         {
@@ -190,6 +231,12 @@ namespace RobloxSharp
         public bool success { get; set; }
         public string msg { get; set; }
         public Object data { get; set; }
+    }
+
+    public class HeadShotResponse
+    {
+        public string Url { get; set; }
+        public bool Final { get; set; }
     }
 
     public class TradeObject

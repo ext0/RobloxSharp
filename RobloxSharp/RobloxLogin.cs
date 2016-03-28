@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Web;
 
 namespace RobloxSharp
 {
@@ -38,7 +39,7 @@ namespace RobloxSharp
             request.Method = "POST";
             request.ServicePoint.Expect100Continue = false;
 
-            string body = @"UserName=" + username + "&Password=" + password + "&IdentificationCode=";
+            string body = @"UserName=" + HttpUtility.UrlEncode(username) + "&Password=" + HttpUtility.UrlEncode(password) + "&IdentificationCode=";
             byte[] postBytes = Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();

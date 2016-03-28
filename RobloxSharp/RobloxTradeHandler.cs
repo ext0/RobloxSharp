@@ -186,7 +186,10 @@ namespace RobloxSharp
             using (StreamReader readStream = new StreamReader(responseStream, Encoding.UTF8))
             {
                 RobloxResponse robloxResponse = JsonConvert.DeserializeObject<RobloxResponse>(readStream.ReadToEnd());
-                robloxResponse.data = (TradeResponseInfo)robloxResponse.data;
+                if (robloxResponse.data is TradeResponseInfo)
+                {
+                    robloxResponse.data = (TradeResponseInfo)robloxResponse.data;
+                }
                 return robloxResponse;
             }
         }

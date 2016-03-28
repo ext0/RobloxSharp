@@ -13,9 +13,9 @@ namespace RobloxSharpTest
         public void TestMethod1()
         {
             CookieContainer collection;
-            RobloxLogin login = new RobloxLogin("HomeguardDev", Reverse("omit"), out collection);
+            RobloxLogin login = new RobloxLogin("RoJackpotBot", "omit", out collection);
             RobloxPurchaseHandler handler = new RobloxPurchaseHandler();
-            Debug.WriteLine(handler.requestLimitedPurchase(145834328, 1704166954, 102, login.authCookies));
+            Debug.WriteLine(handler.requestLimitedPurchase(145834328, 2177422, 99, login.authCookies));
         }
         public string Reverse(string s)
         {
