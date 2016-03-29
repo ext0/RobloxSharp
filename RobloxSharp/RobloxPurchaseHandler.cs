@@ -35,7 +35,6 @@ namespace RobloxSharp
             request.Headers.Add("X-CSRF-TOKEN", XRSFToken);
             request.UserAgent = RobloxUtils.UserAgent;
             request.ContentType = "application/json; charset=utf-8";
-            //request.Referer = "http://www.roblox.com/default-item?id=145834328";
             request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
             request.Headers.Set(HttpRequestHeader.Cookie, cookies);
