@@ -261,4 +261,18 @@ namespace RobloxSharp
         public bool AvatarFinal { get; set; }
         public bool IsOnline { get; set; }
     }
+
+    public class LimitedPurchaseResponse
+    {
+        public string sl_translate { get; set; }
+        public int AssetID { get; set; }
+        public string AssetName { get; set; }
+        public string AssetType { get; set; }
+        public bool AssetIsWearable { get; set; }
+        public string SellerName { get; set; }
+        public string TransactionVerb { get; set; }
+        public int Price { get; set; }
+        public int Currency { get; set; }
+        public bool IsMultiPrivateSale { get; set; }
+    }
 }

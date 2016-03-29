@@ -15,7 +15,14 @@ namespace RobloxSharpTest
             CookieContainer collection;
             RobloxLogin login = new RobloxLogin("RoJackpotBot", "omit", out collection);
             RobloxPurchaseHandler handler = new RobloxPurchaseHandler();
-            Debug.WriteLine(handler.requestLimitedPurchase(145834328, 2177422, 99, login.authCookies));
+            Debug.WriteLine(handler.requestLimitedPurchase(
+                RobloxUtils.getXSRFToken(login.authCookies),
+                19046522,
+                CurrencyType.ROBUX,
+                105,
+                98563581,
+                1703607090,
+                login.authCookies).TransactionVerb);
         }
         public string Reverse(string s)
         {
