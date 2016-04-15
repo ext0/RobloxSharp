@@ -14,6 +14,7 @@ namespace RobloxSharp
     public class RobloxLogin
     {
         public String authCookies { get; set; }
+        public bool successful { get; set; }
         /// <summary>
         /// Attempts to login, sets authCookies to the cookie string needed to perform authenticated tasks if successful.
         /// </summary>
@@ -46,8 +47,23 @@ namespace RobloxSharp
             stream.Write(postBytes, 0, postBytes.Length);
             stream.Close();
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using (Stream responseStream = RobloxUtils.decodeStream(response))
+            {
+                using (StreamReader reader = new StreamReader(responseStream))
+                {
+
+                }
+            }
             Tuple<HttpWebResponse, CookieContainer> tuple = RobloxUtils.getGeneralRequestVerificationToken(cookies, RobloxUtils.buildCookieString(cookies, response));
-            authCookies = RobloxUtils.buildCookieString(tuple.Item2,tuple.Item1);
+            foreach (Cookie cookie in tuple.Item2.GetCookies(response.ResponseUri))
+            {
+                if (cookie.Name.Equals(".ROBLOSECURITY"))
+                {
+                    successful = true;
+                    break;
+                }
+            }
+            authCookies = RobloxUtils.buildCookieString(tuple.Item2, tuple.Item1);
         }
     }
 }

@@ -3,6 +3,8 @@ using RobloxSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Diagnostics;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace RobloxSharpTest
 {
@@ -13,22 +15,8 @@ namespace RobloxSharpTest
         public void TestMethod1()
         {
             CookieContainer collection;
-            RobloxLogin login = new RobloxLogin("RoJackpotBot", "omit", out collection);
-            RobloxPurchaseHandler handler = new RobloxPurchaseHandler();
-            Debug.WriteLine(handler.requestLimitedPurchase(
-                RobloxUtils.getXSRFToken(login.authCookies),
-                19046522,
-                CurrencyType.ROBUX,
-                105,
-                98563581,
-                1703970489,
-                login.authCookies).TransactionVerb);
-        }
-        public string Reverse(string s)
-        {
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            RobloxLogin login = new RobloxLogin("HomeguardDev","omit", out collection);
+            Debug.WriteLine(login.successful);
         }
     }
 }

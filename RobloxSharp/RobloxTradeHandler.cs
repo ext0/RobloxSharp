@@ -23,6 +23,12 @@ namespace RobloxSharp
         Send,
         Decline
     }
+    public enum HatType
+    {
+        HAT,
+        GEAR,
+        FACE
+    }
     public class RobloxTradeHandler
     {
         /// <summary>
@@ -50,6 +56,31 @@ namespace RobloxSharp
                 OfferValue = 0 //placeholder
             });
             return WebUtility.UrlEncode(JsonConvert.SerializeObject(offer));
+        }
+        public List<InventoryItemResponse> getInventory(String userId, String cookies)
+        {
+            RobloxTradeHandler handler = new RobloxTradeHandler();
+            List<InventoryItemResponse> items = new List<InventoryItemResponse>();
+            int i = 1;
+            foreach (HatType type in Enum.GetValues(typeof(HatType)))
+            {
+                i = 1;
+                InventoryResponse response = handler.getInventory(userId, i.ToString(), type, cookies);
+                while (response != null)
+                {
+                    if (response.data == null || response.data.InventoryItems == null)
+                    {
+                        break;
+                    }
+                    foreach (InventoryItemResponse item in response.data.InventoryItems)
+                    {
+                        items.Add(item);
+                    }
+                    i++;
+                    response = handler.getInventory(userId, i.ToString(), type, cookies);
+                }
+            }
+            return items;
         }
         public String createTradeRequest(String senderID, String receiverID, TradeObject trade)
         {
@@ -93,6 +124,35 @@ namespace RobloxSharp
                 }
             }
         }
+        public InventoryResponse getInventory(String id, String page, HatType filter, String cookies)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.roblox.com/Trade/InventoryHandler.ashx?token=%22&filter=" + (int)filter + "&userid=" + id + "&page=" + page + "&itemsPerPage=14&_=0");
+
+            request.KeepAlive = true;
+            request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            request.Headers.Add("Upgrade-Insecure-Requests", @"1");
+            request.UserAgent = RobloxUtils.UserAgent;
+            request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
+            request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
+            request.Headers.Set(HttpRequestHeader.Cookie, cookies);
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using (Stream receiveStream = RobloxUtils.decodeStream(response))
+            {
+                using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<InventoryResponse>(readStream.ReadToEnd());
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
         public TradeList fetchTrades(String cookies, String XRSFToken, TradeType type, int startIndex)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://www.roblox.com/My/Money.aspx/GetMyItemTrades");
@@ -117,17 +177,20 @@ namespace RobloxSharp
             if (type == TradeType.Completed)
             {
                 a = "completed";
-            }else if (type == TradeType.Outbound)
+            }
+            else if (type == TradeType.Outbound)
             {
                 a = "outbound";
-            }else if (type == TradeType.Inbound)
+            }
+            else if (type == TradeType.Inbound)
             {
                 a = "inbound";
-            }else if (type == TradeType.Inactive)
+            }
+            else if (type == TradeType.Inactive)
             {
                 a = "inactive";
             }
-            string body = "{\"statustype\":\""+a+"\",\"startindex\":"+startIndex+"}";
+            string body = "{\"statustype\":\"" + a + "\",\"startindex\":" + startIndex + "}";
             byte[] postBytes = System.Text.Encoding.UTF8.GetBytes(body);
             request.ContentLength = postBytes.Length;
             Stream stream = request.GetRequestStream();
@@ -171,7 +234,8 @@ namespace RobloxSharp
             else if (type == TradeResponseType.Decline)
             {
                 body = "TradeID=" + tradeID + "&cmd=decline";
-            }else if (type == TradeResponseType.Send)
+            }
+            else if (type == TradeResponseType.Send)
             {
                 body = "cmd=send&TradeJSON=" + tradeJSON;
             }
@@ -202,6 +266,35 @@ namespace RobloxSharp
 
     //For any confusion as to why this class is even here, see here
     //http://stackoverflow.com/questions/830112/what-does-d-in-json-mean
+
+    public class InventoryItemResponse
+    {
+        public string Name { get; set; }
+        public string ImageLink { get; set; }
+        public string ItemLink { get; set; }
+        public string SerialNumber { get; set; }
+        public string SerialNumberTotal { get; set; }
+        public string AveragePrice { get; set; }
+        public string OriginalPrice { get; set; }
+        public string UserAssetID { get; set; }
+        public object MembershipLevel { get; set; }
+        public HatType HatType { get; set; }
+    }
+
+    public class InventoryData
+    {
+        public int agentID { get; set; }
+        public int totalNumber { get; set; }
+        public List<InventoryItemResponse> InventoryItems { get; set; }
+    }
+
+    public class InventoryResponse
+    {
+        public string sl_translate { get; set; }
+        public bool success { get; set; }
+        public string msg { get; set; }
+        public InventoryData data { get; set; }
+    }
 
     public class RootTradeList
     {

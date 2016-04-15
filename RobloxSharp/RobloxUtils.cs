@@ -115,6 +115,33 @@ namespace RobloxSharp
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             return new Tuple<HttpWebResponse, CookieContainer>(response, container);
         }
+
+        public static String formatJson(String json)
+        {
+            dynamic parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+        }
+
+        public static int getROBUX(String cookies)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://m.roblox.com/home");
+            request.KeepAlive = true;
+            request.Headers.Set(HttpRequestHeader.CacheControl, "max-age=0");
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+            request.UserAgent = RobloxUtils.UserAgent;
+            request.Headers.Set(HttpRequestHeader.AcceptEncoding, "gzip, deflate, sdch");
+            request.Headers.Set(HttpRequestHeader.AcceptLanguage, "en-US,en;q=0.8");
+            request.Headers.Set(HttpRequestHeader.Cookie, cookies);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using (StreamReader readStream = new StreamReader(decodeStream(response)))
+            {
+                String s = readStream.ReadToEnd();
+                int a = s.IndexOf("currency-robux");
+                int b = s.IndexOf(">", a) + 1;
+                int c = s.IndexOf("<", b);
+                return int.Parse(s.Substring(b, c - b), NumberStyles.AllowThousands);
+            }
+        }
         /// <summary>
         /// Builds a cookie string valid for header use from a CookieContainer and an HttpWebResponse
         /// </summary>
@@ -204,6 +231,10 @@ namespace RobloxSharp
             try
             {
                 UsernameRequest request = getUserId(username);
+                if (request.Id == 1)
+                {
+                    return "/Images/placeholder.png";
+                }
                 HeadShotResponse response = JsonConvert.DeserializeObject<HeadShotResponse>(new WebClient().DownloadString("http://www.roblox.com/headshot-thumbnail/json?userId=" + request.Id + "&width=180&height=180"));
                 return response.Url;
             }
