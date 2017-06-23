@@ -1,4 +1,7 @@
 # RobloxSharp
+# ! Update !
+# I highly doubt this still works, as ROBLOX has surely changed their APIs since 20(14?). I'll leave this up as a testament to how you SHOULDN'T develop a wrapper for a Web API.
+
 C# API for performing automated tasks on ROBLOX.com
 
 <b><h1>Features</h1></b>
